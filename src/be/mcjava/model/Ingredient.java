@@ -33,6 +33,6 @@ public class Ingredient {
     }
     
     public boolean isAvailable() {
-        return currentStock < 0;
+        return currentStock > 0;
     }
 }
