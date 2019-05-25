@@ -48,9 +48,13 @@ public class Product {
     }
     
     public boolean isAvailable() {
-        return ingredients.keySet()
+        return ingredients.entrySet()
                 .stream()
-                .allMatch(Ingredient::isAvailable);
+                .allMatch(this::availableIngredients);
+    }
+    
+    private boolean availableIngredients(Map.Entry<Ingredient, Integer> entry) {
+        return entry.getKey().getCurrentStock() >= entry.getValue();
     }
     
     @Override
