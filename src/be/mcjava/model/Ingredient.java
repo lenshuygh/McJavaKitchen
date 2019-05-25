@@ -33,7 +33,6 @@ public class Ingredient {
     }
     
     public boolean isAvailable() {
-        //todo: implement this, returns false so code will compile -Michiel 24/5/2019
-        return false;
+        return currentStock < 0;
     }
 }
