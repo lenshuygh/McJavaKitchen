@@ -8,8 +8,17 @@ import java.util.List;
  */
 public class CustomerOrder {
     private Long id;
-    private List<OrderItem> orderedItems;
+    private List<OrderItem> itemsToOrder;
     private boolean finished;
+    
+    public CustomerOrder(List<OrderItem> itemsToOrder) {
+        this(null, itemsToOrder);
+    }
+    
+    public CustomerOrder(Long id, List<OrderItem> itemsToOrder) {
+        setId(id);
+        setItemsToOrder(itemsToOrder);
+    }
     
     public Long getId() {
         return id;
@@ -19,12 +28,12 @@ public class CustomerOrder {
         this.id = id;
     }
     
-    public List<OrderItem> getOrderedItems() {
-        return orderedItems;
+    public List<OrderItem> getItemsToOrder() {
+        return itemsToOrder;
     }
     
-    public void setOrderedItems(List<OrderItem> orderedItems) {
-        this.orderedItems = orderedItems;
+    public void setItemsToOrder(List<OrderItem> itemsToOrder) {
+        this.itemsToOrder = itemsToOrder;
     }
     
     public boolean isFinished() {
@@ -32,6 +41,18 @@ public class CustomerOrder {
     }
     
     public void setFinished(boolean finished) {
-        this.finished = finished;
+        boolean actuallyFinished = getItemsToOrder().stream()
+                .allMatch(OrderItem::isFinished);
+        this.finished = actuallyFinished && finished;
+    }
+    
+    public void addItem(OrderItem orderItem) {
+        if (itemsToOrder.contains(orderItem)) {
+            int positionOfOrderItem = itemsToOrder.indexOf(orderItem);
+            OrderItem existingOrder = itemsToOrder.get(positionOfOrderItem);
+            existingOrder.setAmount(existingOrder.getAmount() + orderItem.getAmount());
+            return;
+        }
+        itemsToOrder.add(orderItem);
     }
 }
